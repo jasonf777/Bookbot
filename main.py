@@ -1,4 +1,5 @@
-from stats import get_num_words
+import stats
+import sys
 
 def get_book_text(file_path):
     with open(file_path) as book:
@@ -6,7 +7,24 @@ def get_book_text(file_path):
         return file_content
     
 def main(path):
-    print(get_book_text(path))
+    text = get_book_text(path)
+    word_count = stats.get_num_words(text)
+    character_dictionary = stats.character_count(text)
+    dictionary_list = stats.sort_dict(character_dictionary)
+    print("============ BOOKBOT ============")
+    print(f"Analyzing book found at {path}")
+    print("----------- Word Count ----------")
+    print(f"Found {word_count} total words")
+    print("--------- Character Count -------")
+    for item in dictionary_list:
+        for key, value in item.items():
+            if key.isalpha():
+                print(f"{key}: {value}")
+    print("============= END ===============")
 
-get_num_words("./books/frankenstein.txt")
+if len(sys.argv) != 2:
+    print("Usage: python3 main.py <path_to_book>")
+    sys.exit(1)
 
+path = sys.argv[1]
+main(path)
